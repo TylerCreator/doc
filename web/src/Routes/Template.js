@@ -60,7 +60,9 @@ const styles = theme => ({
     backgroundColor: theme.palette.background.default,
     padding: theme.spacing.unit * 3,
   },
-
+  link:{
+    textDecoration: "none",
+  }
 });
 
 class Templates extends React.Component {
@@ -87,6 +89,7 @@ class Templates extends React.Component {
             width,
             height,
             pages,
+            uri,
             data {
               id,
               label,
@@ -99,6 +102,9 @@ class Templates extends React.Component {
             }
           }
         }`,
+        variables: {
+          ids: this.props.match.params.id,
+        },
       }),
     });
     const { data } = await resp.json();
@@ -158,8 +164,8 @@ class Templates extends React.Component {
             >
               <MenuIcon />
             </IconButton>
-            <Typography variant="title" color="inherit" noWrap>
-              Documents
+            <Typography variant="title" >
+              DOCUMENTS
             </Typography>
           </Toolbar>
         </AppBar>

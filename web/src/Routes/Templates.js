@@ -34,9 +34,13 @@ const styles = theme => ({
     position: 'relative',
     display: 'flex',
     width: '100%',
+    font: 'Formular bold',
+    
   },
   appBar: {
     position: 'absolute',
+    backgroundColor: '#ffffff',
+    font: 'Formular bold',
     marginLeft: drawerWidth,
     [theme.breakpoints.up('md')]: {
       width: '100%',
@@ -59,8 +63,15 @@ const styles = theme => ({
     flexGrow: 1,
     backgroundColor: theme.palette.background.default,
     padding: theme.spacing.unit * 3,
+    
   },
-
+  link:{
+    textDecoration: "none",
+    
+  },
+  button:{
+    color: '#880E4F',
+  }
 });
 
 class Templates extends React.Component {
@@ -87,6 +98,7 @@ class Templates extends React.Component {
             width,
             height,
             pages,
+            uri,
             data {
               id,
               label,
@@ -128,7 +140,7 @@ class Templates extends React.Component {
               <ListItemIcon>
                 <Inbox/>
               </ListItemIcon>
-              <ListItemText>Templates</ListItemText>
+              <ListItemText>TEMPLATES</ListItemText>
             </ListItem>
           </Link>
         </List>
@@ -139,7 +151,7 @@ class Templates extends React.Component {
               <ListItemIcon>
                 <Drafts />
               </ListItemIcon>
-              <ListItemText>My documents</ListItemText>
+              <ListItemText>DOCUMENTS</ListItemText>
             </ListItem>
           </Link>
         </List>
@@ -158,8 +170,8 @@ class Templates extends React.Component {
             >
               <MenuIcon />
             </IconButton>
-            <Typography variant="title" color="inherit" noWrap>
-              Documents
+            <Typography variant="title">
+              DOCUMENTS
             </Typography>
           </Toolbar>
         </AppBar>
@@ -195,8 +207,9 @@ class Templates extends React.Component {
           <Typography>
             <Grid container spacing={24}>
             {this.state.templates.map((t)=>
-              <Grid item xs={24} sm={6} md={4} lg={3}>
+              <Grid item xs={12} sm={6} md={4} lg={3} key={t.id}>
               <Card className={classes.card}>
+                <Link className={classes.link} to={`/templates/${t.id}`}>
                 <CardMedia
                   className={classes.media}
                   image="/static/images/cards/contemplative-reptile.jpg"
@@ -211,11 +224,12 @@ class Templates extends React.Component {
                     across all continents except Antarctica
                   </Typography>
                 </CardContent>
+                </Link>
                 <CardActions>
-                  <Button size="small" color="primary">
+                  <Button className={classes.button} size="small" >
                     Share
                   </Button>
-                  <Button size="small" color="primary">
+                  <Button className={classes.button} size="small" >
                     Learn More
                   </Button>
                 </CardActions>

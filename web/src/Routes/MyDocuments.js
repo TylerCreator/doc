@@ -53,6 +53,12 @@ const styles = theme => ({
     backgroundColor: theme.palette.background.default,
     padding: theme.spacing.unit * 3,
   },
+  link:{
+    textDecoration: "none",
+  },
+  button:{
+    color: '#880E4F',
+  }
 });
 
 class MyDocuments extends React.Component {
@@ -79,7 +85,7 @@ class MyDocuments extends React.Component {
               <ListItemIcon>
                 <Inbox/>
               </ListItemIcon>
-              <ListItemText>Templates</ListItemText>
+              <ListItemText>TEMPLATES</ListItemText>
             </ListItem>
           </Link>
         </List>
@@ -90,7 +96,7 @@ class MyDocuments extends React.Component {
               <ListItemIcon>
                 <Drafts />
               </ListItemIcon>
-              <ListItemText>My documents</ListItemText>
+              <ListItemText>DOCUMENTS</ListItemText>
             </ListItem>
           </Link>
         </List>
@@ -109,8 +115,8 @@ class MyDocuments extends React.Component {
             >
               <MenuIcon />
             </IconButton>
-            <Typography variant="title" color="inherit" noWrap>
-              Documents
+            <Typography variant="title">
+              DOCUMENTS
             </Typography>
           </Toolbar>
         </AppBar>
