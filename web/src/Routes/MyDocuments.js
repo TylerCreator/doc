@@ -1,6 +1,6 @@
 import React, {Fragment} from 'react';
 import PropTypes from 'prop-types';
-import {BrowserRouter as Router, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { withStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
@@ -21,7 +21,7 @@ const drawerWidth = 240;
 const styles = theme => ({
   root: {
     flexGrow: 1,
-    height: 430,
+
     zIndex: 1,
     overflow: 'hidden',
     position: 'relative',
@@ -32,8 +32,9 @@ const styles = theme => ({
     position: 'absolute',
     marginLeft: drawerWidth,
     [theme.breakpoints.up('md')]: {
-      width: `calc(100% - ${drawerWidth}px)`,
+      width: '100%',
     },
+    zIndex: 10000,
   },
   navIconHide: {
     [theme.breakpoints.up('md')]: {
@@ -54,7 +55,7 @@ const styles = theme => ({
   },
 });
 
-class App extends React.Component {
+class MyDocuments extends React.Component {
   state = {
     mobileOpen: false,
   };
@@ -109,7 +110,7 @@ class App extends React.Component {
               <MenuIcon />
             </IconButton>
             <Typography variant="title" color="inherit" noWrap>
-              Responsive drawer
+              Documents
             </Typography>
           </Toolbar>
         </AppBar>
@@ -149,9 +150,9 @@ class App extends React.Component {
   }
 }
 
-App.propTypes = {
+MyDocuments.propTypes = {
   classes: PropTypes.object.isRequired,
   theme: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles, { withTheme: true })(App);
+export default withStyles(styles, { withTheme: true })(MyDocuments);
