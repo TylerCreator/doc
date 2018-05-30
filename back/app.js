@@ -1,6 +1,7 @@
 import express from 'express';
-
-import fs from'fs';
+import bodyParser from 'body-parser';
+import multer from 'multer';
+import fs from 'fs-extra';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import pdf from 'pdf-image';
@@ -12,6 +13,21 @@ import {mergePDF,createPDF} from './tools/renderPDF';
 import {htmlToPDF} from './tools/toHTML';
 
 let app = express();
+//add body-parser
+app.use(bodyParser.json());
+
+//add multer to upload files
+const storage =  multer.diskStorage({
+  destination: function (req, file , callback) {
+    console.log(file)
+    callback(null, './templates');
+  },
+  filename: function (req, file, callback) {
+    callback(null, file.originalname.substring(0,file.originalname.length-4) + '-' + Date.now()+".pdf");
+  }
+});
+const upload = multer({ storage : storage }).array('userPhoto',2);
+
 
 //setting CORS
 app.use(cors());
@@ -101,6 +117,43 @@ app.use(
     rootValue: { request: req },
   })),
 );
+
+app.post('/api/doc',upload,function(req,res){
+  //console.log(req)
+  console.log(req.files)
+  const oldPath = req.files[0].path
+  let newPath = './templates/'+req.files[0].filename.substring(0,req.files[0].filename.length-4)
+  fs.ensureDir(newPath)
+  .then(() => {
+    newPath = newPath+'/'+req.files[0].originalname;
+    fs.move(oldPath,newPath)
+    .then(() => {
+      console.log(newPath)
+      var pdfImage = new pdf.PDFImage(newPath);
+      pdfImage.numberOfPages().then((n)=>{
+        //рендерим картинки
+        pdfImage.convertFile().then(function (newPath) {
+          // [ /tmp/slide-0.png, /tmp/slide-1.png ]
+          console.log(newPath)
+        });
+        //делаем красивую ссылку на картинку каждой страницы
+        let pages = new Array(+n).fill(0).map( (v, page) => ({ url:`http://localhost:3001/${newPath.substring(2,newPath.length-4)}-${page}.png`}))
+        console.log(n)
+        console.log(pages)
+        res.send({path: newPath, pages:pages});
+      }).catch((err)=>{
+        console.log(err);
+      })
+      console.log('success!')
+    })
+    .catch(err => {
+      console.error(err)
+    })
+  })
+  .catch(err => {
+    console.error(err)
+  })
+});
 
 app.listen(3001, function(){
   let pdfImage = new pdf.PDFImage('./templates/one/gramota.pdf');

@@ -16,9 +16,9 @@ const myFont = 'Roboto';
 const theme = createMuiTheme({
     palette: {
       primary: {
-        light: blue[300],
+        light: '#880E4F',
         main: '#ffffff',
-        dark: blue[700],
+        dark: '#880E4F',
       },
       secondary: {
         light: green[300],

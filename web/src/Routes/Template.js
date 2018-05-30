@@ -14,7 +14,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Hidden from '@material-ui/core/Hidden';
 import Divider from '@material-ui/core/Divider';
 import MenuIcon from '@material-ui/icons/Menu';
-import Inbox from '@material-ui/icons/Inbox';
+import Reply from '@material-ui/icons/Reply';
 import Drafts from '@material-ui/icons/Drafts';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -22,6 +22,7 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
+import TextField from '@material-ui/core/TextField';
 
 const drawerWidth = 240;
 
@@ -39,6 +40,11 @@ const styles = theme => ({
     position: 'relative',
     display: 'flex',
     width: '100%',
+  },
+  textField: {
+    margin: theme.spacing.unit,
+    marginRight: theme.spacing.unit*2,
+    marginLeft: theme.spacing.unit*2,
   },
   appBar: {
     position: 'absolute',
@@ -83,11 +89,13 @@ class Templates extends React.Component {
         ]
       },
       mobileOpen: false,
-    }
+    },
+    this.componentDidMount=this.componentDidMount.bind(this);
+    this.handleDrawerToggle =this.handleDrawerToggle .bind(this);
   }
 
   async componentDidMount() {
-    console.log(this.props.match.params.id)
+    
     const resp = await fetch('//localhost:3001/graphql', {
       method: 'POST',
       headers: new Headers({
@@ -145,26 +153,27 @@ class Templates extends React.Component {
         <div className={classes.toolbar} />
         <Divider />
         <List>
-            
         <Link className={classes.link} to="/">
-            <ListItem button>
-              <ListItemIcon>
-                <Inbox/>
-              </ListItemIcon>
-              <ListItemText>Templates</ListItemText>
-            </ListItem>
-          </Link>
-        </List>
+          <ListItem button>
+            <ListItemIcon>
+              <Reply/>
+            </ListItemIcon>
+            <ListItemText>GO BACK</ListItemText>
+          </ListItem>
+        </Link>
         <Divider />
-        <List>
-          <Link className={classes.link} to="/documents">
-            <ListItem button>
-              <ListItemIcon>
-                <Drafts />
-              </ListItemIcon>
-              <ListItemText>My documents</ListItemText>
-            </ListItem>
-          </Link>
+        {template.data ? template.data.map((d)=>
+          <TextField
+          id="textarea"
+          label={d.label}
+          placeholder="`Иванов Иван Иванович"
+          helperText="ФИО в именительном падеже"
+          multiline
+          className={classes.textField}
+          margin="normal"
+        />
+        ):<Fragment/>}
+        
         </List>
       </Fragment>
     );

@@ -23,10 +23,14 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import AddIcon from '@material-ui/icons/Add';
+import { post } from 'axios';
 
 const drawerWidth = 240;
 
 const styles = theme => ({
+  input: {
+    display: 'none',
+  },
   '@global': {
     'body': {
       'margin': 0 ,    // Make all links red.
@@ -44,7 +48,6 @@ const styles = theme => ({
     height: '100vh',
     [theme.breakpoints.up('md')]:{
       position:'absolute',
-      
     }
   },
   appBar: {
@@ -105,7 +108,24 @@ class Templates extends React.Component {
     this.state={
       templates:[],
       mobileOpen: false,
+      file:null,
     }
+    this.componentDidMount = this.componentDidMount.bind(this);
+    this.handleDrawerToggle = this.handleDrawerToggle .bind(this);
+    this.onChangeFile = this.onChangeFile.bind(this)
+    this.fileUpload = this.fileUpload.bind(this)
+  }
+
+  fileUpload(file){
+    const url = "http://localhost:3001/api/doc";
+    const formData = new FormData();
+    formData.append('userPhoto',file);
+    const config = {
+        headers: {
+            'enctype': 'multipart/form-data'
+        }
+    }
+    return  post(url, formData, config);
   }
 
   async componentDidMount() {
@@ -150,6 +170,14 @@ class Templates extends React.Component {
   handleDrawerToggle = () => {
     this.setState({ mobileOpen: !this.state.mobileOpen });
   };
+
+  async onChangeFile(event){
+    this.setState({file:event.target.files[0]});
+    this.fileUpload(event.target.files[0]).then((response)=>{
+      console.log(response.data);
+      this.setState({info:response.data})
+    })
+  }
 
   render() {
     const { classes, theme } = this.props;
@@ -265,9 +293,18 @@ class Templates extends React.Component {
             
           </Typography>
         </main>
-        <Button variant="fab" className={classes.floatButton}>
-          <AddIcon />
-        </Button>
+        <input
+          className={classes.input}
+          id="flat-button-file"
+          type="file"
+          onChange={this.onChangeFile.bind(this)}
+        />
+        <label htmlFor="flat-button-file">
+          <Button variant="fab" className={classes.floatButton} component="span">
+            <AddIcon />
+          </Button>
+        </label>
+        
       </div>
       
     );

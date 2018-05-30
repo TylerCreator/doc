@@ -67,9 +67,14 @@ const styles = theme => ({
 });
 
 class MyDocuments extends React.Component {
-  state = {
-    mobileOpen: false,
-  };
+
+  constructor(props) {
+    super(props);
+    this.state={
+      mobileOpen: false,
+    },
+    this.handleDrawerToggle =this.handleDrawerToggle .bind(this);
+  }
 
   handleDrawerToggle = () => {
     this.setState({ mobileOpen: !this.state.mobileOpen });
