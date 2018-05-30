@@ -72,7 +72,7 @@ const theme = createMuiTheme({
             color: myColor,
             fontFamily:myFont,
         },
-    }
+    },
 });
 
 ReactDOM.render(

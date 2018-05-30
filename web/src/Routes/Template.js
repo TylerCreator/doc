@@ -26,6 +26,11 @@ import Grid from '@material-ui/core/Grid';
 const drawerWidth = 240;
 
 const styles = theme => ({
+  '@global': {
+    'body': {
+      'margin': 0 ,    // Make all links red.
+    }
+  },
   root: {
     flexGrow: 1,
 
@@ -70,12 +75,19 @@ class Templates extends React.Component {
   constructor(props) {
     super(props);
     this.state={
-      templates:[],
+      template:{
+        pages:[
+          {
+            uri:'',
+          }
+        ]
+      },
       mobileOpen: false,
     }
   }
 
   async componentDidMount() {
+    console.log(this.props.match.params.id)
     const resp = await fetch('//localhost:3001/graphql', {
       method: 'POST',
       headers: new Headers({
@@ -88,7 +100,9 @@ class Templates extends React.Component {
             name,
             width,
             height,
-            pages,
+            pages {
+              uri,
+            },
             uri,
             data {
               id,
@@ -111,7 +125,7 @@ class Templates extends React.Component {
     console.log(data)
     //if (!data && !data.courses) throw new Error('Failed to load course.');
     this.setState({
-      templates:data.templates,
+      template:data.templates[0],
     })
   }
 
@@ -121,7 +135,10 @@ class Templates extends React.Component {
 
   render() {
     const { classes, theme } = this.props;
-
+    const {template} = this.state;
+    let imgPath = template.pages[0].uri;
+    imgPath = '../../../back'+imgPath.substring(1,imgPath.length)
+    console.log(imgPath)
     const drawer = (
         
       <Fragment>
@@ -199,7 +216,7 @@ class Templates extends React.Component {
         <main className={classes.content}>
           <div className={classes.toolbar} />
           <Typography>
-          
+            <img src="./gramota-0.png" />
           </Typography>
         </main>
       </div>

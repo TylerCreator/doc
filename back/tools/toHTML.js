@@ -7,7 +7,7 @@ let t={name: 'test Document',
 width: '1240',
 height: '1754',
 pages: 3,
-uri: './templates/gramota.pdf',
+uri: './templates/one/gramota.pdf',
 data:[
   {
     id: 0,

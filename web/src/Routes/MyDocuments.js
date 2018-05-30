@@ -19,6 +19,11 @@ import Drafts from '@material-ui/icons/Drafts';
 const drawerWidth = 240;
 
 const styles = theme => ({
+  '@global': {
+    'body': {
+      'margin': 0 ,    // Make all links red.
+    }
+  },
   root: {
     flexGrow: 1,
 

@@ -4,7 +4,7 @@ import  {htmlToPDF}  from './toHTML';
 
 function mergePDF(){ 
     pdftk
-    .input('./templates/gramota.pdf')
+    .input('./templates/one/gramota.pdf')
     .stamp('./tools/tmp/diploma.pdf')
     .output('./tools/tmp/out.pdf')
     .then(buffer => {

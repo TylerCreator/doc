@@ -2,24 +2,19 @@ import express from 'express';
 
 import fs from'fs';
 import mongoose from 'mongoose';
-import cors from 'cors'
+import cors from 'cors';
+import pdf from 'pdf-image';
 import { TemplateSchema } from './data/models';
 import expressGraphQL from 'express-graphql';
 import { buildSchema } from 'graphql';
 import schema from './data/schema'
 import {mergePDF,createPDF} from './tools/renderPDF';
 import {htmlToPDF} from './tools/toHTML';
+
 let app = express();
 
 //setting CORS
 app.use(cors());
-/*
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Methods", "POST, GET");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-})*/
 
 //Set up default mongoose connection
 mongoose.connect('mongodb://localhost:27017');
@@ -31,15 +26,6 @@ let db = mongoose.connection;
 //Bind connection to error event (to get notification of connection errors)
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
-
-
-// Construct a schema, using GraphQL schema language
-/*let schema = buildSchema(`
-  type Query {
-    hello: String
-  }
-`);*/
-
 // The root provides a resolver function for each API endpoint
 let root = {
   hello: () => {
@@ -47,17 +33,17 @@ let root = {
   },
 };
 
-
-
 // Compile model from schema
 const TemplateModel = mongoose.model('Template', TemplateSchema );
 
-TemplateModel.create({
+let tmplt = {
   name: 'test Document',
   width: '1240',
   height: '1754',
-  pages: 3,
-  uri: './templates/gramota.pdf',
+  pages: [{
+    uri: './templates/one/gramota-0.png'
+  }],
+  uri: './templates/one/gramota.pdf',
   data:[
     {
       id: 1,
@@ -82,7 +68,9 @@ TemplateModel.create({
       style: '',
     }
   ],
-}, function (err, awesome_instance) {
+};
+
+TemplateModel.create(tmplt, function (err, awesome_instance) {
   if (err) return console.log(err)
 });
 
@@ -92,10 +80,11 @@ app.get('/', async function(req, res){
   console.log(data);
   htmlToPDF();
   mergePDF();
+  
   res.send("Hello World");
 });
 
-app.get('/templates', async function(req, res){
+app.get('/templates/', async function(req, res){
   console.log(db);
   console.log(db.models.template);
   let data = await db.models.template.find();
@@ -114,6 +103,13 @@ app.use(
 );
 
 app.listen(3001, function(){
+  let pdfImage = new pdf.PDFImage('./templates/one/gramota.pdf');
+  
+  pdfImage.convertFile().then(function (imagePaths) {
+    // [ /tmp/slide-0.png, /tmp/slide-1.png ]
+    console.log(imagePaths)
+  });
   console.log('Example app listening on port 3001!');
+  
 });
 

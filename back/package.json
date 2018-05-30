@@ -19,6 +19,7 @@
     "mongoose": "^5.1.2",
     "node-pdftk": "^1.2.3",
     "nodemon": "^1.17.5",
+    "pdf-image": "^2.0.0",
     "wkhtmltopdf": "^0.3.4"
   },
   "devDependencies": {

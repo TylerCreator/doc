@@ -22,20 +22,30 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
+import AddIcon from '@material-ui/icons/Add';
 
 const drawerWidth = 240;
 
 const styles = theme => ({
+  '@global': {
+    'body': {
+      'margin': 0 ,    // Make all links red.
+    }
+  },
   root: {
     flexGrow: 1,
-
+    margin: 0,
     zIndex: 1,
     overflow: 'hidden',
     position: 'relative',
     display: 'flex',
     width: '100%',
     font: 'Formular bold',
-    
+    height: '100vh',
+    [theme.breakpoints.up('md')]:{
+      position:'absolute',
+      
+    }
   },
   appBar: {
     position: 'absolute',
@@ -63,7 +73,6 @@ const styles = theme => ({
     flexGrow: 1,
     backgroundColor: theme.palette.background.default,
     padding: theme.spacing.unit * 3,
-    
   },
   link:{
     textDecoration: "none",
@@ -71,6 +80,21 @@ const styles = theme => ({
   },
   button:{
     color: '#880E4F',
+  },
+  floatButton:{
+    [theme.breakpoints.up('sm')]:{
+      bottom: 30,
+      right: 10,
+    },
+    color: '#FFFFFF',
+    backgroundColor:'#880E4F',
+    position: 'absolute',
+    bottom: 30,
+    right: 10,
+    zIndex: 10000,
+    '&:hover': {
+      backgroundColor:'#880E4F',
+    },
   }
 });
 
@@ -97,7 +121,9 @@ class Templates extends React.Component {
             name,
             width,
             height,
-            pages,
+            pages{
+              uri,
+            },
             uri,
             data {
               id,
@@ -236,9 +262,14 @@ class Templates extends React.Component {
               </Card>
               </Grid>)}
             </Grid>
+            
           </Typography>
         </main>
+        <Button variant="fab" className={classes.floatButton}>
+          <AddIcon />
+        </Button>
       </div>
+      
     );
   }
 }

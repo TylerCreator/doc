@@ -14,7 +14,16 @@ import {
       name:  { type: new NonNull(StringType) },
       width:  { type: new NonNull(StringType) },
       height:  { type: new NonNull(StringType) },
-      pages:  { type: new NonNull(Int) },
+      pages: {
+        type: new GraphQLList(
+          new ObjectType({
+            name: 'PageType',
+            fields: {
+              uri: { type: StringType },
+            },
+          }),
+        ),
+      },
       uri:  { type: new NonNull(StringType) },
       data: {
         type: new GraphQLList(
