@@ -19,7 +19,7 @@ app.use(bodyParser.json());
 //add multer to upload files
 const storage =  multer.diskStorage({
   destination: function (req, file , callback) {
-    console.log(file)
+    console.log(__dirname)
     callback(null, './templates');
   },
   filename: function (req, file, callback) {
@@ -57,7 +57,7 @@ let tmplt = {
   width: '1240',
   height: '1754',
   pages: [{
-    uri: './templates/one/gramota-0.png'
+    url: './templates/one/gramota-0.png'
   }],
   uri: './templates/one/gramota.pdf',
   data:[
@@ -86,9 +86,49 @@ let tmplt = {
   ],
 };
 
-TemplateModel.create(tmplt, function (err, awesome_instance) {
-  if (err) return console.log(err)
-});
+async function createTemplate(t,_pages,path){
+  console.log(_pages);
+  console.log(_pages);
+  console.log(_pages);
+  let tmp = {
+    name: t.originalname.substring(0,t.originalname.length-4),
+    width: '1240',
+    height: '1754',
+    pages: _pages,
+    uri: path,
+    data:[
+      {
+        id: 1,
+        label: "first",
+        val: "String",
+      },
+      {
+        id: 2,
+        label: "second",
+        val: "",
+      },
+    ],
+    rects:[
+      {
+        id: '1',
+        page: 1,
+        style: 'position:absolute; left: 40mm ; top: 40mm; width: 50mm; height:20mm; border: 1px solid black',
+      },
+      {
+        id: '2',
+        page: 2,
+        style: '',
+      }
+    ],
+  };
+  TemplateModel.create(tmp, function (err, awesome_instance) {
+    if (err) return console.log(err)
+  });
+}
+
+// TemplateModel.create(tmplt, function (err, awesome_instance) {
+//   if (err) return console.log(err)
+// });
 
 app.get('/', async function(req, res){
   console.log(fs.readdirSync('.'));
@@ -117,10 +157,9 @@ app.use(
     rootValue: { request: req },
   })),
 );
-
+//РАБОТА С ФАЙЛАМИ
+//ЗАГРУЗКА ФАЙЛА В ПАПКУ
 app.post('/api/doc',upload,function(req,res){
-  //console.log(req)
-  console.log(req.files)
   const oldPath = req.files[0].path
   let newPath = './templates/'+req.files[0].filename.substring(0,req.files[0].filename.length-4)
   fs.ensureDir(newPath)
@@ -128,23 +167,20 @@ app.post('/api/doc',upload,function(req,res){
     newPath = newPath+'/'+req.files[0].originalname;
     fs.move(oldPath,newPath)
     .then(() => {
-      console.log(newPath)
       var pdfImage = new pdf.PDFImage(newPath);
       pdfImage.numberOfPages().then((n)=>{
         //рендерим картинки
         pdfImage.convertFile().then(function (newPath) {
           // [ /tmp/slide-0.png, /tmp/slide-1.png ]
-          console.log(newPath)
         });
         //делаем красивую ссылку на картинку каждой страницы
         let pages = new Array(+n).fill(0).map( (v, page) => ({ url:`http://localhost:3001/${newPath.substring(2,newPath.length-4)}-${page}.png`}))
-        console.log(n)
-        console.log(pages)
-        res.send({path: newPath, pages:pages});
+        createTemplate(req.files[0], pages,newPath).then(()=>{
+          res.send({path: newPath, pages:pages});
+        })
       }).catch((err)=>{
         console.log(err);
       })
-      console.log('success!')
     })
     .catch(err => {
       console.error(err)
@@ -153,6 +189,11 @@ app.post('/api/doc',upload,function(req,res){
   .catch(err => {
     console.error(err)
   })
+});
+//ОТПРАВЛЕНИЕ СКРИНОВ СТРАНИЦ ПО ЗАПРОСУ
+app.get(/(.*\.png)$/i, function (req, res) {
+  var pdfPath = req.params[0];
+  res.sendFile(__dirname.substring(0,__dirname.length-5)+"/"+pdfPath);
 });
 
 app.listen(3001, function(){

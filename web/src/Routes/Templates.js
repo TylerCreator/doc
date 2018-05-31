@@ -142,7 +142,7 @@ class Templates extends React.Component {
             width,
             height,
             pages{
-              uri,
+              url,
             },
             uri,
             data {
@@ -161,10 +161,13 @@ class Templates extends React.Component {
     });
     const { data } = await resp.json();
     console.log(data)
-    //if (!data && !data.courses) throw new Error('Failed to load course.');
-    this.setState({
-      templates:data.templates,
-    })
+    if (!data ) console.log('Faild to load templates')
+    else{
+      this.setState({
+        templates:data.templates,
+      })
+    }
+    
   }
 
   handleDrawerToggle = () => {

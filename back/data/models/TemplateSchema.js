@@ -11,7 +11,7 @@ const TemlateSchema = new Schema({
     width: String,
     height: String,
     pages: [{
-        uri: String,
+        url: String,
     }],
     uri:String,
     data:[{

@@ -109,7 +109,7 @@ class Templates extends React.Component {
             width,
             height,
             pages {
-              uri,
+              url,
             },
             uri,
             data {

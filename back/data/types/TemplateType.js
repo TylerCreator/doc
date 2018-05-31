@@ -19,7 +19,7 @@ import {
           new ObjectType({
             name: 'PageType',
             fields: {
-              uri: { type: StringType },
+              url: { type: StringType },
             },
           }),
         ),
