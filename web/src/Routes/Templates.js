@@ -111,24 +111,13 @@ class Templates extends React.Component {
       file:null,
     }
     this.componentDidMount = this.componentDidMount.bind(this);
-    this.handleDrawerToggle = this.handleDrawerToggle .bind(this);
+    this.getTemplates = this.getTemplates.bind(this);
+    this.handleDrawerToggle = this.handleDrawerToggle.bind(this);
     this.onChangeFile = this.onChangeFile.bind(this)
     this.fileUpload = this.fileUpload.bind(this)
   }
 
-  fileUpload(file){
-    const url = "http://localhost:3001/api/doc";
-    const formData = new FormData();
-    formData.append('userPhoto',file);
-    const config = {
-        headers: {
-            'enctype': 'multipart/form-data'
-        }
-    }
-    return  post(url, formData, config);
-  }
-
-  async componentDidMount() {
+  async getTemplates(){
     const resp = await fetch('//localhost:3001/graphql', {
       method: 'POST',
       headers: new Headers({
@@ -167,7 +156,22 @@ class Templates extends React.Component {
         templates:data.templates,
       })
     }
-    
+  }
+
+  fileUpload(file){
+    const url = "http://localhost:3001/api/doc";
+    const formData = new FormData();
+    formData.append('userPhoto',file);
+    const config = {
+        headers: {
+            'enctype': 'multipart/form-data'
+        }
+    }
+    return  post(url, formData, config);
+  }
+
+  async componentDidMount() {
+    this.getTemplates();
   }
 
   handleDrawerToggle = () => {
@@ -178,7 +182,10 @@ class Templates extends React.Component {
     this.setState({file:event.target.files[0]});
     this.fileUpload(event.target.files[0]).then((response)=>{
       console.log(response.data);
-      this.setState({info:response.data})
+      this.getTemplates();
+      this.setState({
+        info:response.data,
+      })
     })
   }
 
