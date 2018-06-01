@@ -139,11 +139,10 @@ class Doc extends Component {
       return (
         <div>
           <Stage width={window.innerWidth} height={window.innerHeight} onMouseDown={this.begDraw} onMouseUp={this.endDraw}>
-            
-            <Layer width={window.innerWidth} height={window.innerHeight} zIndex={1000}>
+            <Layer width={window.innerWidth} height={window.innerHeight}>
               <Image image={this.state.image} height={window.innerHeight}/>
             </Layer>
-            <Layer width={window.innerWidth} height={window.innerHeight} zIndex={10000}>
+            <Layer width={window.innerWidth} height={window.innerHeight}>
               {rects}
             </Layer >
           </Stage>
