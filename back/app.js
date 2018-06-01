@@ -194,6 +194,8 @@ app.post('/api/doc',upload,function(req,res){
 app.get(/(.*\.png)$/i, function (req, res) {
   var pdfPath = req.params[0];
   res.sendFile(__dirname.substring(0,__dirname.length-5)+"/"+pdfPath);
+  // res.sendFile(__dirname.substring(0,__dirname.length-5)+"templates/one/gramota.pdf");
+
 });
 
 app.listen(3001, function(){

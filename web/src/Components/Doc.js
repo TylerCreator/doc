@@ -123,10 +123,10 @@ class Doc extends Component {
     render() {
       const rects = this.state.rects.map(r => {
         if (this.state.currentRect&&r.key===this.state.currentRect.key){
-          return <Rect {...r} fill="#f00" shadowBlur={5} onClick={()=>this.editRect(r)}  onMouseDown={contentClick} />
+          return <Rect {...r}  stroke="black" strokeWidth={1} shadowBlur={5} onClick={()=>this.editRect(r)}  onMouseDown={contentClick} />
 
         } else {
-          return <Rect {...r} fill="#fff" shadowBlur={5} onClick={()=>this.editRect(r)}  onMouseDown={contentClick} />
+          return <Rect {...r}  stroke="black" strokeWidth={1} shadowBlur={5} onClick={()=>this.editRect(r)}  onMouseDown={contentClick} />
         }
       });
       console.log(this.state.image)
@@ -139,12 +139,13 @@ class Doc extends Component {
       return (
         <div>
           <Stage width={window.innerWidth} height={window.innerHeight} onMouseDown={this.begDraw} onMouseUp={this.endDraw}>
-            <Layer width={window.innerWidth} height={window.innerHeight} z->
-              {rects}
-            </Layer>
-            <Layer width={window.innerWidth} height={window.innerHeight}>
+            
+            <Layer width={window.innerWidth} height={window.innerHeight} zIndex={1000}>
               <Image image={this.state.image} height={window.innerHeight}/>
             </Layer>
+            <Layer width={window.innerWidth} height={window.innerHeight} zIndex={10000}>
+              {rects}
+            </Layer >
           </Stage>
           <div width="100%">
             <p>{this.state.page}</p>
