@@ -23,6 +23,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
+import Doc from '../Components/Doc';
 
 const drawerWidth = 240;
 
@@ -73,7 +74,7 @@ const styles = theme => ({
   },
   link:{
     textDecoration: "none",
-  }
+  },
 });
 
 class Templates extends React.Component {
@@ -84,7 +85,7 @@ class Templates extends React.Component {
       template:{
         pages:[
           {
-            uri:'',
+            url:'',
           }
         ]
       },
@@ -144,9 +145,6 @@ class Templates extends React.Component {
   render() {
     const { classes, theme } = this.props;
     const {template} = this.state;
-    let imgPath = template.pages[0].uri;
-    imgPath = '../../../back'+imgPath.substring(1,imgPath.length)
-    console.log(imgPath)
     const drawer = (
         
       <Fragment>
@@ -225,7 +223,9 @@ class Templates extends React.Component {
         <main className={classes.content}>
           <div className={classes.toolbar} />
           <Typography>
-            <img src="./gramota-0.png" />
+            <div>
+              <Doc template={template} />
+            </div>
           </Typography>
         </main>
       </div>
