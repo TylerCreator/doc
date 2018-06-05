@@ -160,6 +160,7 @@ app.use(
 //РАБОТА С ФАЙЛАМИ
 //ЗАГРУЗКА ФАЙЛА В ПАПКУ
 app.post('/api/doc',upload,function(req,res){
+  let BLUR_RATIO =4;
   const oldPath = req.files[0].path
   let newPath = './templates/'+req.files[0].filename.substring(0,req.files[0].filename.length-4)
   fs.ensureDir(newPath)
@@ -167,7 +168,13 @@ app.post('/api/doc',upload,function(req,res){
     newPath = newPath+'/'+req.files[0].originalname;
     fs.move(oldPath,newPath)
     .then(() => {
-      var pdfImage = new pdf.PDFImage(newPath);
+      let pdfImage = new pdf.PDFImage(newPath, {
+        graphicsMagick: true,
+        convertOptions: {
+            '-density': ''+72*BLUR_RATIO,
+            '-resize': Math.round(100/BLUR_RATIO)+'%'
+        }
+    });
       pdfImage.numberOfPages().then((n)=>{
         //рендерим картинки
         pdfImage.convertFile().then(function (newPath) {
