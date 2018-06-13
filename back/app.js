@@ -110,6 +110,22 @@ app.get('/templates/', async (res) => {
   });
 });
 
+app.get('/download', function(req, res, next) {
+  //var filename = req.params.id;
+  // file = '/templates/result.pdf';
+  // res.header('Content-disposition', 'inline; filename=' + "new");
+  // res.header('Content-type', 'application/pdf');
+  // fs.readFile(__dirname + file , function (err,data){
+  //   res.contentType("application/pdf");
+  //   res.send(data);
+  //});
+  res.header('Content-disposition', 'inline; filename=' + "new");
+  res.header('Content-type', 'application/pdf');
+  console.log(`__dirname.substring(0, __dirname.length - 5)}/templates/result.pdf`);
+  res.sendFile(`${__dirname.substring(0, __dirname.length - 5)}/templates/result.pdf`);
+
+});
+
 app.use(
   '/graphql',
   expressGraphQL(req => ({
