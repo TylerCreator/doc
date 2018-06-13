@@ -1,5 +1,14 @@
 import React, { Component } from 'react';
 import {Layer, Stage, Image, Rect} from 'react-konva';
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+
+const styles = theme => ({
+  stage: {
+    overflow: 'hidden',
+    position: 'relative',
+  },
+});
 
 class Doc extends Component {
     
@@ -121,6 +130,7 @@ class Doc extends Component {
     return null;
     }
     render() {
+      const { classes, theme } = this.props;
       const rects = this.state.rects.map(r => {
         if (this.state.currentRect&&r.key===this.state.currentRect.key){
           return <Rect {...r}  stroke="black" strokeWidth={1} shadowBlur={5} onClick={()=>this.editRect(r)}  onMouseDown={contentClick} />
@@ -139,10 +149,10 @@ class Doc extends Component {
       return (
         <div>
           <Stage width={window.innerWidth} height={window.innerHeight} onMouseDown={this.begDraw} onMouseUp={this.endDraw}>
-            <Layer width={window.innerWidth} height={window.innerHeight}>
-              <Image image={this.state.image} height={window.innerHeight}/>
+            <Layer>
+              <Image image={this.state.image} />
             </Layer>
-            <Layer width={window.innerWidth} height={window.innerHeight}>
+            <Layer>
               {rects}
             </Layer >
           </Stage>
@@ -158,5 +168,9 @@ class Doc extends Component {
       return null;
     }
   }
-  
-  export default Doc;
+  Doc.propTypes = {
+    classes: PropTypes.object.isRequired,
+    theme: PropTypes.object.isRequired,
+  }
+
+  export default withStyles(styles, { withTheme: true })(Doc);

@@ -132,10 +132,8 @@ async function createTemplate(t,_pages,path){
 
 app.get('/', async function(req, res){
   console.log(fs.readdirSync('.'));
-  let data = await db.models.template.find();
-  console.log(data);
-  htmlToPDF();
-  mergePDF();
+  //let data = await db.models.template.find();
+  console.log("START ______");
   
   res.send("Hello World");
 });
@@ -145,8 +143,10 @@ app.get('/templates/', async function(req, res){
   console.log(db.models.template);
   let data = await db.models.template.find();
   console.log(data);
-  //htmlToPDF(data.templates[0])
   res.send(data);
+  htmlToPDF().then(()=>{
+    mergePDF()
+  })
 });
 
 app.use(
@@ -206,12 +206,12 @@ app.get(/(.*\.png)$/i, function (req, res) {
 });
 
 app.listen(3001, function(){
-  let pdfImage = new pdf.PDFImage('./templates/one/gramota.pdf');
+  // let pdfImage = new pdf.PDFImage('./templates/one/gramota.pdf');
   
-  pdfImage.convertFile().then(function (imagePaths) {
-    // [ /tmp/slide-0.png, /tmp/slide-1.png ]
-    console.log(imagePaths)
-  });
+  // pdfImage.convertFile().then(function (imagePaths) {
+  //   // [ /tmp/slide-0.png, /tmp/slide-1.png ]
+  //   console.log(imagePaths)
+  // });
   console.log('Example app listening on port 3001!');
   
 });

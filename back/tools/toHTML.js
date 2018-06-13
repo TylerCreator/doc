@@ -1,4 +1,4 @@
-import pdf from 'html-pdf';
+//import pdf from 'html-pdf';
 import wkhtmltopdf from 'wkhtmltopdf';
 //import pdftk from 'node-pdftk';
 
@@ -47,8 +47,9 @@ function htmlToPDF(){
     </html>`;
 
     var options = { output: './tools/tmp/diploma.pdf', pageSize: 'A4', marginLeft: 0, marginRight: 0 , marginTop : 0, marginBottom: 0, noBackground:true};
-    let file = pdf.create(_html)
+    
     wkhtmltopdf(_html, options);
+    //let file = pdf.create(_html)
     // console.log(_html)
     // pdf.create(_html, options).toFile('./tools/tmp/diploma.pdf', function(err, res) {
     //     if (err) return console.log(err);

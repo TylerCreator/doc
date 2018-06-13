@@ -2,7 +2,7 @@ import pdf from 'html-pdf';
 import pdftk from 'node-pdftk';
 import  {htmlToPDF}  from './toHTML';
 
-function mergePDF(){ 
+async function mergePDF(){ 
     pdftk
     .input('./templates/one/gramota.pdf')
     .stamp('./tools/tmp/diploma.pdf')
