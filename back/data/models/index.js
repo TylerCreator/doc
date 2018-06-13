@@ -7,7 +7,7 @@
  * LICENSE.txt file in the root directory of this source tree.
  */
 
-import mongoose from 'mongoose'
+import mongoose from 'mongoose';
 import TemplateSchema from './TemplateSchema';
 import DocumentSchema from './DocumentSchema';
 
@@ -15,9 +15,9 @@ import DocumentSchema from './DocumentSchema';
 initialize models
 */
 
-let TemplateModel =  mongoose.model('Template',TemplateSchema)
+const TemplateModel = mongoose.model('Template', TemplateSchema);
 
-let DocumentModel =  mongoose.model('Document',DocumentSchema)
+const DocumentModel = mongoose.model('Document', DocumentSchema);
 export {
   TemplateModel,
   DocumentModel,

@@ -8,28 +8,27 @@
  */
 
 import {
-    GraphQLSchema as Schema,
-    GraphQLObjectType as ObjectType,
-  } from 'graphql';
-  
+  GraphQLSchema as Schema,
+  GraphQLObjectType as ObjectType,
+} from 'graphql';
 
-  import { templates } from './queries/template';
-  
-  const schema = new Schema({
-    query: new ObjectType({
-      name: 'Query',
-      fields: {
-        templates,
-      },
-    }),
-    // mutation: new ObjectType({
-    //   name: 'Mutation',
-    //   fields: {
-    //     //createTemplate,
-        
-    //   },
-    // }),
-  });
-  
-  export default schema;
-  
+
+import { templates } from './queries/template';
+
+const schema = new Schema({
+  query: new ObjectType({
+    name: 'Query',
+    fields: {
+      templates,
+    },
+  }),
+  // mutation: new ObjectType({
+  //   name: 'Mutation',
+  //   fields: {
+  //     //createTemplate,
+
+  //   },
+  // }),
+});
+
+export default schema;

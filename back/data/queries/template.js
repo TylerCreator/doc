@@ -1,7 +1,7 @@
 import { GraphQLString as StringType, GraphQLList as List } from 'graphql';
 import TemplateType from '../types/TemplateType';
 
-import {TemplateModel} from '../models'
+import { TemplateModel } from '../models';
 
 const templates = {
   type: new List(TemplateType),
@@ -13,16 +13,11 @@ const templates = {
   },
   resolve(obj, args) {
     if (args.ids) {
-      return TemplateModel.find({_id:args.ids});
-         
+      return TemplateModel.find({ _id: args.ids });
     }
     return TemplateModel.find();
   },
 };
 
 
-
-
-export {
-  templates,
-};
+export { templates };
