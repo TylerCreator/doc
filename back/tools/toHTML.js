@@ -13,29 +13,30 @@ const t = {
     {
       id: 0,
       label: 'first',
-      val: 'String',
+      val: 'I СТЕПЕНИ ВРУЧАЕТСЯ',
     },
     {
       id: 1,
       label: 'second',
-      val: '',
+      val: 'Климонову Михаилу Сергеевичу',
     },
   ],
   rects: [
     {
       id: '0',
       page: 1,
-      style: 'position:absolute; left: 40mm ; top: 40mm; width: 50mm; height:20mm; border: 1px solid black',
+      style: 'position:absolute; left: 30mm ; top: 120mm; width: 204mm; height:15mm; border: 1px solid black; text-align:center; font-size:50px; vertical-align: text-top;',
     },
     {
       id: '1',
       page: 2,
-      style: '',
+      style: 'position:absolute; left: 30mm ; top: 150mm; width: 204mm; height:8mm; border: 1px solid black; text-align:center; font-size:30px; vertical-align: text-top;',
     },
   ],
 };
 
 function htmlToPDF() {
+  
   const htmlTMP = `
     <html>
         <header>

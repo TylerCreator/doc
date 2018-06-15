@@ -6,7 +6,7 @@ async function mergePDF() {
     .stamp('./tools/tmp/diploma.pdf')
     .output('./tools/tmp/out.pdf')
     .then((buffer) => {
-      console.log(`pdf has been changed${buffer}`);
+      console.log('pdf has been changed');
       // Do stuff with the output buffer
     })
     .catch((err) => {

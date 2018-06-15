@@ -49,8 +49,6 @@ const TemplateModel = mongoose.model('Template', TemplateSchema);
 
 async function createTemplate(t, _pages, path) {
   console.log(_pages);
-  console.log(_pages);
-  console.log(_pages);
   const tmp = {
     name: t.originalname.substring(0, t.originalname.length - 4),
     width: '1240',
@@ -95,8 +93,9 @@ app.get('/', async (res) => {
   console.log(fs.readdirSync('.'));
   // let data = await db.models.template.find();
   console.log('START ______');
-
-  res.send('Hello World');
+  htmlToPDF();
+  mergePDF();
+  //res.send('Hello World');
 });
 
 app.get('/templates/', async (res) => {
@@ -104,10 +103,9 @@ app.get('/templates/', async (res) => {
   console.log(db.models.template);
   const data = await db.models.template.find();
   console.log(data);
+
   res.send(data);
-  htmlToPDF().then(() => {
-    mergePDF();
-  });
+  
 });
 
 app.get('/download', function(req, res, next) {
@@ -121,7 +119,7 @@ app.get('/download', function(req, res, next) {
   //});
   res.header('Content-disposition', 'inline; filename=' + "new");
   res.header('Content-type', 'application/pdf');
-  console.log(`__dirname.substring(0, __dirname.length - 5)}/templates/result.pdf`);
+  console.log(`${__dirname.substring(0, __dirname.length - 5)}/templates/result.pdf`);
   res.sendFile(`${__dirname.substring(0, __dirname.length - 5)}/templates/result.pdf`);
 
 });
@@ -152,13 +150,14 @@ app.post('/api/doc', upload, (req, res) => {
               '-resize': `${Math.round(100 / BLUR_RATIO)}%`,
             },
           });
+          console.log(pdfImage.numberOfPages())
           pdfImage.numberOfPages().then((n) => {
             // рендерим картинки
             pdfImage.convertFile().then(() => {
               // [ /tmp/slide-0.png, /tmp/slide-1.png ]
             });
             // делаем красивую ссылку на картинку каждой страницы
-            const pages = new Array(+n).fill(0).map(page => ({ url: `http://localhost:3001/${newPath.substring(2, newPath.length - 4)}-${page}.png` }));
+            const pages = new Array(+n).fill(0).map((v, page) => ({ url: `http://localhost:3001/${newPath.substring(2, newPath.length - 4)}-${page++}.png` }));
             createTemplate(req.files[0], pages, newPath).then(() => {
               res.send({ path: newPath, pages });
             });
