@@ -98,7 +98,7 @@ class Templates extends React.Component {
       },
       mobileOpen: false,
       page:0,
-      pageText:"0",
+      pageText:"1",
       image:null
     },
     this.componentDidMount=this.componentDidMount.bind(this);
@@ -170,7 +170,7 @@ class Templates extends React.Component {
         this.setState({
           page: n,
           image: image,
-          pageText: ""+n
+          pageText: ""+(n+1)
         }, function () {
           console.log(this.state.template.pages);
         })
@@ -188,7 +188,7 @@ class Templates extends React.Component {
         this.setState({
           page: n,
           image: image,
-          pageText: ""+n
+          pageText: ""+(n+1)
         }, function () {
           console.log(this.state);
         })
@@ -201,13 +201,13 @@ class Templates extends React.Component {
       pageText: event.target.value
     })
     const image = new window.Image();
-    if (this.state.template.pages && n>=0&&n<this.state.template.pages.length){
-      image.src = this.state.template.pages[n].url;
+    if (this.state.template.pages && n-1>=0&&n-1<this.state.template.pages.length){
+      image.src = this.state.template.pages[n-1].url;
       image.onload = () => {
         // setState will redraw layer
         // because "image" property is changed
         this.setState({
-          page: n,
+          page: n-1,
           image: image,
           pageText: ""+n
         }, function () {
@@ -252,7 +252,7 @@ class Templates extends React.Component {
         </List>
         <Divider />
         <div width="100%" className={classes.counter}>
-            <p>{this.state.page}</p>
+            <p>{this.state.page+1}</p>
         </div>
         <div display="inline-block">
           <button onClick={this.backPage}>Назад</button>

@@ -149,7 +149,7 @@ app.post('/api/doc', upload, (req, res) => {
               // [ /tmp/slide-0.png, /tmp/slide-1.png ]
             });
             // делаем красивую ссылку на картинку каждой страницы
-            const pages = new Array(+n).fill(0).map((v, page) => ({ url: `http://localhost:3001/${newPath.substring(2, newPath.length - 4)}-${page + 1}.png` }));
+            const pages = new Array(+n).fill(0).map((v, page) => ({ url: `http://localhost:3001/${newPath.substring(2, newPath.length - 4)}-${page}.png` }));
             createTemplate(req.files[0], pages, newPath).then(() => {
               res.send({ path: newPath, pages });
             });

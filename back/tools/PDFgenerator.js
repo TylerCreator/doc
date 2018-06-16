@@ -1,5 +1,7 @@
 import wkhtmltopdf from 'wkhtmltopdf';
 import pdftk from 'node-pdftk';
+import fs from 'fs';
+
 
 const t = {
   name: 'test Document',
@@ -69,6 +71,11 @@ async function createPDF() {
             </div>
         </body>
     </html>`;
+  const fileName = './file.html';
+  const s = fs.createWriteStream(fileName);
+  s.once('open', () => {
+    s.end(`<!DOCTYPE html>${htmlTMP}`);
+  });
 
   const options = {
     output: './tools/tmp/diploma.pdf', pageSize: 'A4', marginLeft: 0, marginRight: 0, marginTop: 0, marginBottom: 0, noBackground: true,
