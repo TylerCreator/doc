@@ -12,13 +12,18 @@ const t = {
   data: [
     {
       id: 0,
-      label: 'first',
+      label: 'Диплом *степени* вручается',
       val: 'I СТЕПЕНИ ВРУЧАЕТСЯ',
     },
     {
       id: 1,
-      label: 'second',
+      label: 'Кому вручается',
       val: 'Климонову Михаилу Сергеевичу',
+    },
+    {
+      id: 1,
+      label: 'За что',
+      val: 'За разработку данного приложения в секции информационные и алгебраические системы кафедры естественных наук Иркутского государсвтвенного университета',
     },
   ],
   rects: [
@@ -29,7 +34,12 @@ const t = {
     },
     {
       id: '1',
-      page: 2,
+      page: 1,
+      style: 'position:absolute; left: 30mm ; top: 150mm; width: 204mm; height:8mm; border: 1px solid black; text-align:center; font-size:30px; vertical-align: text-top;',
+    },
+    {
+      id: '2',
+      page: 1,
       style: 'position:absolute; left: 30mm ; top: 150mm; width: 204mm; height:8mm; border: 1px solid black; text-align:center; font-size:30px; vertical-align: text-top;',
     },
   ],

@@ -150,7 +150,6 @@ app.post('/api/doc', upload, (req, res) => {
               '-resize': `${Math.round(100 / BLUR_RATIO)}%`,
             },
           });
-          console.log(pdfImage.numberOfPages())
           pdfImage.numberOfPages().then((n) => {
             // рендерим картинки
             pdfImage.convertFile().then(() => {

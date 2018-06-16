@@ -16,14 +16,10 @@ class Doc extends Component {
       super(props);
       this.state = {
         image: null,
-        page:0,
         images:[],
         rects: []
       };
       this.rectId=0;
-      this.pageChange = this.pageChange.bind(this);
-      this.backPage = this.backPage.bind(this);
-      this.nextPage = this.nextPage.bind(this);
       this.begDraw = this.begDraw.bind(this);
       this.endDraw = this.endDraw.bind(this);
       this.editRect = this.editRect.bind(this);
@@ -51,78 +47,21 @@ class Doc extends Component {
         rects
       });
     }
-    backPage(event) {
-      let n;
-      if (this.state.page===0)
-        n = this.state.images.length-1;
-      else 
-        n = (this.state.page-1)%this.state.images.length;
-      const image = new window.Image();
-      if (this.state.images && n>=0&&n<this.state.images.length){
-        image.src = this.state.images[n].url;
-        image.onload = () => {
-          // setState will redraw layer
-          // because "image" property is changed
-          this.setState({
-            page: n,
-            image: image,
-            pageText: ""+n
-          }, function () {
-            console.log(this.state.image);
-          })
-        };
-      }
-    }
-    nextPage(event) {
-      let n = (this.state.page+1)%this.state.images.length;
-      const image = new window.Image();
-      if (this.state.images && n>=0&&n<this.state.images.length){
-        image.src = this.state.images[n].url;
-        image.onload = () => {
-          // setState will redraw layer
-          // because "image" property is changed
-          this.setState({
-            page: n,
-            image: image,
-            pageText: ""+n
-          }, function () {
-            console.log(this.state.role);
-          })
-        };
-      }
-    }
-    pageChange(event) {
-      let n = +event.target.value;
-      this.setState({
-        pageText: event.target.value
-      })
-      const image = new window.Image();
-      if (this.state.images && n>=0&&n<this.state.images.length){
-        image.src = this.state.images[n].url;
-        image.onload = () => {
-          // setState will redraw layer
-          // because "image" property is changed
-          this.setState({
-            page: n,
-            image: image
-          }, function () {
-            console.log(this.state.image);
-          })
-        };
-      }
-    }
+
   
     componentWillReceiveProps(newProps) {
     const image = new window.Image();
     
     if (newProps.template){
-        image.src = newProps.template.pages[this.state.page].url;
+        image.src = newProps.template.pages[newProps.page].url;
         image.onload = () => {
             // setState will redraw layer
             // because "image" property is changed
             this.setState({
               image: image,
-              images: newProps.template.pages
+              //image: newProps.image,
+              images: newProps.template.pages,
+              page: newProps.page
             });
         };
         console.log(image)
@@ -155,14 +94,7 @@ class Doc extends Component {
             <Layer>
               {rects}
             </Layer >
-          </Stage>
-          <div width="100%">
-            <p>{this.state.page}</p>
-          </div>
-
-          <button onClick={this.backPage}>Назад</button>
-          <input type="text" value={this.state.pageText} onChange={this.pageChange} />
-          <button onClick={this.nextPage}>Вперёд</button>      
+          </Stage>   
         </div>
       );
       return null;

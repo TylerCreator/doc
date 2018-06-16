@@ -75,6 +75,9 @@ const styles = theme => ({
   link:{
     textDecoration: "none",
   },
+  counter:{
+    textAlign: "center",
+  }
 });
 
 class Templates extends React.Component {
@@ -90,9 +93,15 @@ class Templates extends React.Component {
         ]
       },
       mobileOpen: false,
+      page:0,
+      pageText:"0",
+      image:null
     },
     this.componentDidMount=this.componentDidMount.bind(this);
     this.handleDrawerToggle =this.handleDrawerToggle .bind(this);
+    this.pageChange = this.pageChange.bind(this);
+    this.backPage = this.backPage.bind(this);
+    this.nextPage = this.nextPage.bind(this);
   }
 
   async componentDidMount() {
@@ -142,9 +151,72 @@ class Templates extends React.Component {
     this.setState({ mobileOpen: !this.state.mobileOpen });
   };
 
+  backPage(event) {
+    let n;
+    if (this.state.page===0)
+      n = this.state.template.pages.length-1;
+    else 
+      n = (this.state.page-1)%this.state.template.pages.length;
+    const image = new window.Image();
+    if (this.state.template.pages && n>=0&&n<this.state.template.pages.length){
+      image.src = this.state.template.pages[n].url;
+      image.onload = () => {
+        // setState will redraw layer
+        // because "image" property is changed
+        this.setState({
+          page: n,
+          image: image,
+          pageText: ""+n
+        }, function () {
+          console.log(this.state.template.pages);
+        })
+      };
+    }
+  }
+  nextPage(event) {
+    let n = (this.state.page+1)%this.state.template.pages.length;
+    const image = new window.Image();
+    if (this.state.template.pages && n>=0&&n<this.state.template.pages.length){
+      image.src = this.state.template.pages[n].url;
+      image.onload = () => {
+        // setState will redraw layer
+        // because "image" property is changed
+        this.setState({
+          page: n,
+          image: image,
+          pageText: ""+n
+        }, function () {
+          console.log(this.state);
+        })
+      };
+    }
+  }
+  pageChange(event) {
+    let n = +event.target.value;
+    this.setState({
+      pageText: event.target.value
+    })
+    const image = new window.Image();
+    if (this.state.template.pages && n>=0&&n<this.state.template.pages.length){
+      image.src = this.state.template.pages[n].url;
+      image.onload = () => {
+        // setState will redraw layer
+        // because "image" property is changed
+        this.setState({
+          page: n,
+          image: image,
+          pageText: ""+n
+        }, function () {
+          console.log(this.state.image);
+        })
+      };
+    }
+  }
+
   render() {
     const { classes, theme } = this.props;
-    const {template} = this.state;
+    const {template,page} = this.state;
+    console.log(template.data )
     const drawer = (
         
       <Fragment>
@@ -173,6 +245,15 @@ class Templates extends React.Component {
         ):<Fragment/>}
         
         </List>
+        <Divider />
+        <div width="100%" className={classes.counter}>
+            <p>{this.state.page}</p>
+        </div>
+        <div display="inline-block">
+          <button onClick={this.backPage}>Назад</button>
+          <input type="text" value={this.state.pageText} onChange={this.pageChange} />
+          <button onClick={this.nextPage}>Вперёд</button> 
+        </div>
       </Fragment>
     );
 
@@ -224,7 +305,7 @@ class Templates extends React.Component {
           <div className={classes.toolbar} />
           <Typography>
             <div>
-              <Doc template={template} />
+              <Doc template={template} page={this.state.page}/>
             </div>
           </Typography>
         </main>
