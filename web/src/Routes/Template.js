@@ -15,6 +15,7 @@ import Hidden from '@material-ui/core/Hidden';
 import Divider from '@material-ui/core/Divider';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeft from '@material-ui/icons/ChevronLeft';
+import ChevronRight from '@material-ui/icons/ChevronRight';
 import Reply from '@material-ui/icons/Reply';
 import Drafts from '@material-ui/icons/Drafts';
 import Card from '@material-ui/core/Card';
@@ -251,18 +252,16 @@ class Templates extends React.Component {
         
         </List>
         <Divider />
-        <div width="100%" className={classes.counter}>
-            <p>{this.state.page+1}</p>
+        <div style={{display: 'flex', alignItems: 'center'}}>
+          <Button color="secondary" className={classes.button} onClick={this.backPage}>
+          <ChevronLeft className={classes.rightIcon}>send</ChevronLeft>
+          </Button>
+          <TextField type="text" value={this.state.pageText} onChange={this.pageChange} />
+          <p>/{template.pages.length}</p>
+          <Button color="secondary" className={classes.button} onClick={this.nextPage}>
+          <ChevronRight className={classes.rightIcon}>send</ChevronRight>
+          </Button>
         </div>
-        <div display="inline-block">
-          <button onClick={this.backPage}>Назад</button>
-          <input type="text" value={this.state.pageText} onChange={this.pageChange} />
-          <button onClick={this.nextPage}>Вперёд</button> 
-        </div>
-        <Button color="secondary" className={classes.button}>
-          Send
-        <ChevronLeft className={classes.rightIcon}>send</ChevronLeft>
-        </Button>
       </Fragment>
     );
 
