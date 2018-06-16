@@ -13,7 +13,7 @@ import {
 } from 'graphql';
 
 
-import { templates } from './queries/template';
+import templates from './queries/template';
 
 const schema = new Schema({
   query: new ObjectType({

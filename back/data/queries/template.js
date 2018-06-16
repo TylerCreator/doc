@@ -20,4 +20,4 @@ const templates = {
 };
 
 
-export { templates };
+export default templates;

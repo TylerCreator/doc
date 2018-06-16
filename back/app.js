@@ -8,8 +8,7 @@ import pdf from 'pdf-image';
 import expressGraphQL from 'express-graphql';
 import { TemplateSchema } from './data/models';
 import schema from './data/schema';
-import { mergePDF } from './tools/renderPDF';
-import { htmlToPDF } from './tools/toHTML';
+import { createPDF } from './tools/PDFgenerator';
 
 const app = express();
 // add body-parser
@@ -17,16 +16,16 @@ app.use(bodyParser.json());
 
 // add multer to upload files
 
-const storage =  multer.diskStorage({
-  destination: function (req, file , callback) {
-    console.log(__dirname)
+const storage = multer.diskStorage({
+  destination(req, file, callback) {
+    console.log(__dirname);
     callback(null, './templates');
   },
-  filename: function (req, file, callback) {
-    callback(null, file.originalname.substring(0,file.originalname.length-4) + '-' + Date.now()+".pdf");
-  }
+  filename(req, file, callback) {
+    callback(null, `${file.originalname.substring(0, file.originalname.length - 4)}-${Date.now()}.pdf`);
+  },
 });
-const upload = multer({ storage : storage }).array('userPhoto',2);
+const upload = multer({ storage }).array('userPhoto', 2);
 
 
 // setting CORS
@@ -89,13 +88,10 @@ async function createTemplate(t, _pages, path) {
 //   if (err) return console.log(err)
 // });
 
-app.get('/', async (res) => {
+app.get('/', async () => {
   console.log(fs.readdirSync('.'));
-  // let data = await db.models.template.find();
   console.log('START ______');
-  htmlToPDF();
-  mergePDF();
-  //res.send('Hello World');
+  createPDF();
 });
 
 app.get('/templates/', async (res) => {
@@ -103,25 +99,22 @@ app.get('/templates/', async (res) => {
   console.log(db.models.template);
   const data = await db.models.template.find();
   console.log(data);
-
   res.send(data);
-  
 });
 
-app.get('/download', function(req, res, next) {
-  //var filename = req.params.id;
+app.get('/download', (req, res) => {
+  // var filename = req.params.id;
   // file = '/templates/result.pdf';
   // res.header('Content-disposition', 'inline; filename=' + "new");
   // res.header('Content-type', 'application/pdf');
   // fs.readFile(__dirname + file , function (err,data){
   //   res.contentType("application/pdf");
   //   res.send(data);
-  //});
-  res.header('Content-disposition', 'inline; filename=' + "new");
+  // });
+  res.header('Content-disposition', 'inline; filename=new');
   res.header('Content-type', 'application/pdf');
   console.log(`${__dirname.substring(0, __dirname.length - 5)}/templates/result.pdf`);
   res.sendFile(`${__dirname.substring(0, __dirname.length - 5)}/templates/result.pdf`);
-
 });
 
 app.use(
@@ -156,7 +149,7 @@ app.post('/api/doc', upload, (req, res) => {
               // [ /tmp/slide-0.png, /tmp/slide-1.png ]
             });
             // делаем красивую ссылку на картинку каждой страницы
-            const pages = new Array(+n).fill(0).map((v, page) => ({ url: `http://localhost:3001/${newPath.substring(2, newPath.length - 4)}-${page++}.png` }));
+            const pages = new Array(+n).fill(0).map((v, page) => ({ url: `http://localhost:3001/${newPath.substring(2, newPath.length - 4)}-${page + 1}.png` }));
             createTemplate(req.files[0], pages, newPath).then(() => {
               res.send({ path: newPath, pages });
             });

@@ -10,7 +10,7 @@ import {
 const TemplateType = new ObjectType({
   name: 'TemplateType',
   fields: {
-    id: { type: new NonNull(ID), resolve: t => t._id },
+    id: { type: new NonNull(ID), resolve: t => t._id }, // eslint-disable-line no-underscore-dangle
     name: { type: new NonNull(StringType) },
     width: { type: new NonNull(StringType) },
     height: { type: new NonNull(StringType) },

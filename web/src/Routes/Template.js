@@ -14,6 +14,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Hidden from '@material-ui/core/Hidden';
 import Divider from '@material-ui/core/Divider';
 import MenuIcon from '@material-ui/icons/Menu';
+import ChevronLeft from '@material-ui/icons/ChevronLeft';
 import Reply from '@material-ui/icons/Reply';
 import Drafts from '@material-ui/icons/Drafts';
 import Card from '@material-ui/core/Card';
@@ -77,6 +78,9 @@ const styles = theme => ({
   },
   counter:{
     textAlign: "center",
+  },
+  button:{
+    color:"#880e4f",
   }
 });
 
@@ -233,6 +237,7 @@ class Templates extends React.Component {
         </Link>
         <Divider />
         {template.data ? template.data.map((d)=>
+        
           <TextField
           id="textarea"
           label={d.label}
@@ -254,6 +259,10 @@ class Templates extends React.Component {
           <input type="text" value={this.state.pageText} onChange={this.pageChange} />
           <button onClick={this.nextPage}>Вперёд</button> 
         </div>
+        <Button color="secondary" className={classes.button}>
+          Send
+        <ChevronLeft className={classes.rightIcon}>send</ChevronLeft>
+        </Button>
       </Fragment>
     );
 
