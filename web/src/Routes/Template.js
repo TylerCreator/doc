@@ -1,7 +1,7 @@
 import React, {Fragment} from 'react';
 import { post } from 'axios';
 import PropTypes from 'prop-types';
-import {Link } from "react-router-dom";
+import {Link, Redirect, withRouter } from "react-router-dom";
 import { withStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
@@ -105,7 +105,9 @@ class Templates extends React.Component {
       mobileOpen: false,
       page:0,
       pageText:"1",
-      image:null
+      image:null,
+      redirect: false,
+      path:'',
     },
     this.componentDidMount=this.componentDidMount.bind(this);
     this.handleDrawerToggle =this.handleDrawerToggle .bind(this);
@@ -237,15 +239,28 @@ class Templates extends React.Component {
       ],
     })
     .then(function (response) {
-      console.log(response);
+      console.log(response.data);
+      // this.context.router.transitionTo(response.data);
+      // this.props.history.push(response.data)
+      this.setState({
+        path:response.data,
+        redirect:true,
+      }, function () {
+        // this.props.history.push(response.data);
+        // console.log(this.state.path,this.state.redirect);
+      })
     })
     .catch(function (error) {
-      console.log(error.response);
+      //console.log(error.response);
     });
     
   }
 
   render() {
+    
+    if (this.state.redirect) {
+      return <Redirect push to={this.state.path}/>;
+    }
     const { classes, theme } = this.props;
     const {template,page} = this.state;
     console.log(template.data )
@@ -278,6 +293,7 @@ class Templates extends React.Component {
         ):<Fragment/>}
         
         </List>
+        <Divider />
         <div style={{display: 'flex', alignItems: 'center'}}>
           <Button color="secondary" className={classes.button} onClick={this.backPage}>
           <ChevronLeft className={classes.rightIcon}>send</ChevronLeft>
@@ -361,4 +377,4 @@ Templates.propTypes = {
   theme: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles, { withTheme: true })(Templates);
+export default withRouter(withStyles(styles, { withTheme: true })(Templates));

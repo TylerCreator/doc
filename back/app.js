@@ -90,8 +90,6 @@ async function createTemplate(t, _pages, path) {
 
 app.get('/', async () => {
   console.log(fs.readdirSync('.'));
-  console.log('START ______');
-  createPDF();
 });
 
 app.get('/templates/', async (res) => {
@@ -111,11 +109,18 @@ app.post('/download', (req, res) => {
   //   res.contentType("application/pdf");
   //   res.send(data);
   // });
-  console.log(req.body);
-  res.header('Content-disposition', 'inline; filename=new');
-  res.header('Content-type', 'application/pdf');
-  console.log(`${__dirname.substring(0, __dirname.length - 5)}/templates/result.pdf`);
+  // console.log(req.body);
+
+  // TO SEND PDF
+  // res.header('Content-disposition', 'inline; filename=new');
+  // res.header('Content-type', 'application/pdf');
+  // console.log(`${__dirname.substring(0, __dirname.length - 5)}/templates/result.pdf`);
   // res.sendFile(`${__dirname.substring(0, __dirname.length - 5)}/templates/result.pdf`);
+
+  createPDF(req.body.t).then((data) => {
+    res.send(`http://localhost:3001/${data.substring(2)}`);
+    // res.redirect(`http://localhost:3001/${data.substring(2)}`);
+  });
 });
 
 app.use(
@@ -170,6 +175,15 @@ app.post('/api/doc', upload, (req, res) => {
 app.get(/(.*\.png)$/i, (req, res) => {
   const pdfPath = req.params[0];
   res.sendFile(`${__dirname.substring(0, __dirname.length - 5)}/${pdfPath}`);
+  // res.sendFile(__dirname.substring(0,__dirname.length-5)+"templates/one/gramota.pdf");
+});
+
+app.get(/(.*\.pdf)$/i, (req, res) => {
+  const pdfPath = req.params[0];
+  res.header('Content-disposition', 'inline; filename=new');
+  res.header('Content-type', 'application/pdf');
+  res.sendFile(`${__dirname.substring(0, __dirname.length - 5)}/${pdfPath}`);
+
   // res.sendFile(__dirname.substring(0,__dirname.length-5)+"templates/one/gramota.pdf");
 });
 
