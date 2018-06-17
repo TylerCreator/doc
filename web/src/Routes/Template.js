@@ -1,4 +1,5 @@
 import React, {Fragment} from 'react';
+import { post } from 'axios';
 import PropTypes from 'prop-types';
 import {Link } from "react-router-dom";
 import { withStyles } from '@material-ui/core/styles';
@@ -26,6 +27,7 @@ import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import Doc from '../Components/Doc';
+
 
 const drawerWidth = 240;
 
@@ -82,6 +84,9 @@ const styles = theme => ({
   },
   button:{
     color:"#880e4f",
+    '&:hover': {
+      backgroundColor: '#f9eaf2',
+    },
   }
 });
 
@@ -107,6 +112,7 @@ class Templates extends React.Component {
     this.pageChange = this.pageChange.bind(this);
     this.backPage = this.backPage.bind(this);
     this.nextPage = this.nextPage.bind(this);
+    this.DownloadPDF = this.DownloadPDF.bind(this);
   }
 
   async componentDidMount() {
@@ -217,6 +223,27 @@ class Templates extends React.Component {
       };
     }
   }
+  async DownloadPDF(){
+    const url = "http://localhost:3001/download";
+    const formData = new FormData();
+    formData.append('template',this.state.template);
+    post(url, {
+      t: this.state.template,
+      fields:[
+        {
+          id:'1',
+          value:'hardcode'
+        }
+      ],
+    })
+    .then(function (response) {
+      console.log(response);
+    })
+    .catch(function (error) {
+      console.log(error.response);
+    });
+    
+  }
 
   render() {
     const { classes, theme } = this.props;
@@ -251,7 +278,6 @@ class Templates extends React.Component {
         ):<Fragment/>}
         
         </List>
-        <Divider />
         <div style={{display: 'flex', alignItems: 'center'}}>
           <Button color="secondary" className={classes.button} onClick={this.backPage}>
           <ChevronLeft className={classes.rightIcon}>send</ChevronLeft>
@@ -260,6 +286,14 @@ class Templates extends React.Component {
           <p>/{template.pages.length}</p>
           <Button color="secondary" className={classes.button} onClick={this.nextPage}>
           <ChevronRight className={classes.rightIcon}>send</ChevronRight>
+          </Button>
+        </div>
+        <div style={{display: 'flex', alignItems: 'center'}}>
+          <Button color="primary" style={{flex: '1'}} className={classes.button} onClick={this.backPage}>
+          SAVE
+          </Button>
+          <Button color="primary" style={{flex: '1'}} className={classes.button} onClick={this.DownloadPDF}>
+          DOWNLOAD
           </Button>
         </div>
       </Fragment>

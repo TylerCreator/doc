@@ -102,7 +102,7 @@ app.get('/templates/', async (res) => {
   res.send(data);
 });
 
-app.get('/download', (req, res) => {
+app.post('/download', (req, res) => {
   // var filename = req.params.id;
   // file = '/templates/result.pdf';
   // res.header('Content-disposition', 'inline; filename=' + "new");
@@ -111,10 +111,11 @@ app.get('/download', (req, res) => {
   //   res.contentType("application/pdf");
   //   res.send(data);
   // });
+  console.log(req.body);
   res.header('Content-disposition', 'inline; filename=new');
   res.header('Content-type', 'application/pdf');
   console.log(`${__dirname.substring(0, __dirname.length - 5)}/templates/result.pdf`);
-  res.sendFile(`${__dirname.substring(0, __dirname.length - 5)}/templates/result.pdf`);
+  // res.sendFile(`${__dirname.substring(0, __dirname.length - 5)}/templates/result.pdf`);
 });
 
 app.use(
