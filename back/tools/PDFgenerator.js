@@ -2,49 +2,6 @@ import wkhtmltopdf from 'wkhtmltopdf';
 import pdftk from 'node-pdftk';
 import fs from 'fs';
 
-
-// const t = {
-//   name: 'test Document',
-//   width: '1240',
-//   height: '1754',
-//   pages: 3,
-//   uri: './templates/one/gramota.pdf',
-//   data: [
-//     {
-//       id: 0,
-//       label: 'Диплом *степени* вручается',
-//       val: 'I СТЕПЕНИ ВРУЧАЕТСЯ',
-//     },
-//     {
-//       id: 1,
-//       label: 'Кому вручается',
-//       val: 'Климонову Михаилу Сергеевичу',
-//     },
-//     {
-//       id: 1,
-//       label: 'За что',
-//       val: 'За разработку данного приложения в секции информационные и алгебраические системы кафедры естественных наук Иркутского государсвтвенного университета',
-//     },
-//   ],
-//   rects: [
-//     {
-//       id: '0',
-//       page: 1,
-//       style: 'position:absolute; left: 30mm ; top: 120mm; width: 204mm; height:15mm; border: 1px solid black; text-align:center; font-size:50px; vertical-align: text-top;',
-//     },
-//     {
-//       id: '1',
-//       page: 1,
-//       style: 'position:absolute; left: 30mm ; top: 150mm; width: 204mm; height:8mm; border: 1px solid black; text-align:center; font-size:30px; vertical-align: text-top;',
-//     },
-//     {
-//       id: '2',
-//       page: 1,
-//       style: 'position:absolute; left: 30mm ; top: 170mm; width: 204mm; height:8mm; text-align:center; border: none; font-size:30px; vertical-align: text-top;',
-//     },
-//   ],
-// };
-
 async function mergePDF(inputt, st, newPDF) {
   return pdftk
     .input(inputt)
