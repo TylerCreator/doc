@@ -60,8 +60,10 @@ async function mergePDF(inputt, st, newPDF) {
     });
 }
 
-async function createPDF(t) {
-  // console.log(t.uri);
+async function createPDF(data) {
+  const { t } = data;
+  const { fields } = data;
+  console.log(fields);
   // console.log();
   const htmlTMP = `
     <html>
@@ -70,7 +72,8 @@ async function createPDF(t) {
         </header>
         <body>
             <div class="rects">
-                ${t.rects.map(curMeta => `<div style="${curMeta.style}">${t.data[parseInt(curMeta.id, 10) - 1].val}</div>`).join('')}
+                ${t.rects.map(curMeta => `<div style="${curMeta.style}">${(fields.length - 1 >= parseInt(curMeta.id, 10) &&
+                  parseInt(curMeta.id, 10) >= 0) ? fields[parseInt(curMeta.id, 10)].val : ''}</div>`).join('')}
             </div>
         </body>
     </html>`;

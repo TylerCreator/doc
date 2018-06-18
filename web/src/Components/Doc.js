@@ -86,16 +86,14 @@ class Doc extends Component {
       }
       if (this.state.image)
       return (
-        <div>
-          <Stage width={window.innerWidth} height={window.innerHeight} onMouseDown={this.begDraw} onMouseUp={this.endDraw}>
-            <Layer>
-              <Image image={this.state.image} />
-            </Layer>
-            <Layer>
-              {rects}
-            </Layer >
-          </Stage>   
-        </div>
+        <Stage width={window.innerWidth} height={window.innerHeight} onMouseDown={this.begDraw} onMouseUp={this.endDraw}>
+          <Layer>
+            <Image image={this.state.image} />
+          </Layer>
+          <Layer>
+            {rects}
+          </Layer >
+        </Stage>   
       );
       return null;
     }

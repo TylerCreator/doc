@@ -56,26 +56,56 @@ async function createTemplate(t, _pages, path) {
     uri: path,
     data: [
       {
+        id: 0,
+        label: 'Диплом *степени* вручается',
+        val: '',
+      },
+      {
         id: 1,
-        label: 'first',
-        val: 'String',
+        label: 'Кому вручается',
+        val: '',
       },
       {
         id: 2,
-        label: 'second',
+        label: 'За что',
+        val: '',
+      },
+      {
+        id: 3,
+        label: 'Должность',
+        val: '',
+      },
+      {
+        id: 4,
+        label: 'Фамилия и инициалы',
         val: '',
       },
     ],
     rects: [
       {
-        id: '1',
+        id: 0,
         page: 1,
-        style: 'position:absolute; left: 40mm ; top: 40mm; width: 50mm; height:20mm; border: 1px solid black',
+        style: 'position:absolute; left: 30mm ; top: 120mm; width: 204mm; height:15mm; border: none; text-align:center; font-size:50px; vertical-align: text-top;',
       },
       {
-        id: '2',
-        page: 2,
-        style: '',
+        id: 1,
+        page: 1,
+        style: 'position:absolute; left: 30mm ; top: 150mm; width: 204mm; height:8mm; border: none; text-align:center; font-size:30px; vertical-align: text-top;',
+      },
+      {
+        id: 2,
+        page: 1,
+        style: 'position:absolute; left: 30mm ; top: 170mm; width: 204mm; height:8mm; text-align:center; border: none; font-size:30px; vertical-align: text-top;',
+      },
+      {
+        id: 3,
+        page: 1,
+        style: 'position:absolute; left: 15mm ; top: 280mm; width: 204mm; height:8mm; text-align:left; border: none; font-size:28px; vertical-align: text-top;',
+      },
+      {
+        id: 4,
+        page: 1,
+        style: 'position:absolute; left: 15mm ; top: 290mm; width: 204mm; height:8mm; text-align:left; border: none; font-size:32px; vertical-align: text-top;',
       },
     ],
   };
@@ -117,7 +147,7 @@ app.post('/download', (req, res) => {
   // console.log(`${__dirname.substring(0, __dirname.length - 5)}/templates/result.pdf`);
   // res.sendFile(`${__dirname.substring(0, __dirname.length - 5)}/templates/result.pdf`);
 
-  createPDF(req.body.t).then((data) => {
+  createPDF(req.body).then((data) => {
     res.send(`http://localhost:3001/${data.substring(2)}`);
     // res.redirect(`http://localhost:3001/${data.substring(2)}`);
   });

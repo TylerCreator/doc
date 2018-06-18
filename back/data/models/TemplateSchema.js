@@ -15,12 +15,12 @@ const TemlateSchema = new Schema({
   }],
   uri: String,
   data: [{
-    id: String,
+    id: Number,
     label: String,
     val: String,
   }],
   rects: [{
-    id: String,
+    id: Number,
     page: Number,
     style: String,
   }],

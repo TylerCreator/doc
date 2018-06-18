@@ -27,7 +27,7 @@ import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import Doc from '../Components/Doc';
-
+import TFcomponent from '../Components/TFcomponent';
 
 const drawerWidth = 240;
 
@@ -102,6 +102,7 @@ class Templates extends React.Component {
           }
         ]
       },
+      fields:[],
       mobileOpen: false,
       page:0,
       pageText:"1",
@@ -115,6 +116,7 @@ class Templates extends React.Component {
     this.backPage = this.backPage.bind(this);
     this.nextPage = this.nextPage.bind(this);
     this.DownloadPDF = this.DownloadPDF.bind(this);
+    this.TFOnChange = this.TFOnChange.bind(this);
   }
 
   async componentDidMount() {
@@ -153,10 +155,11 @@ class Templates extends React.Component {
       }),
     });
     const { data } = await resp.json();
-    console.log(data)
+    //мconsole.log(data)
     //if (!data && !data.courses) throw new Error('Failed to load course.');
     this.setState({
       template:data.templates[0],
+      fields: data.templates[0].data
     })
   }
 
@@ -181,7 +184,7 @@ class Templates extends React.Component {
           image: image,
           pageText: ""+(n+1)
         }, function () {
-          console.log(this.state.template.pages);
+          // console.log(this.state.template.pages);
         })
       };
     }
@@ -199,7 +202,7 @@ class Templates extends React.Component {
           image: image,
           pageText: ""+(n+1)
         }, function () {
-          console.log(this.state);
+          // console.log(this.state);
         })
       };
     }
@@ -220,7 +223,7 @@ class Templates extends React.Component {
           image: image,
           pageText: ""+n
         }, function () {
-          console.log(this.state.image);
+          //console.log(this.state.image);
         })
       };
     }
@@ -229,17 +232,14 @@ class Templates extends React.Component {
     const url = "http://localhost:3001/download";
     const formData = new FormData();
     formData.append('template',this.state.template);
+    let win = window.open('about:blank','_blank');
     post(url, {
       t: this.state.template,
-      fields:[
-        {
-          id:'1',
-          value:'hardcode'
-        }
-      ],
+      fields: this.state.fields,
     })
     .then(function (response) {
       console.log(response.data);
+      win.location = response.data;
       // this.context.router.transitionTo(response.data);
       // this.props.history.push(response.data)
       this.setState({
@@ -247,23 +247,33 @@ class Templates extends React.Component {
         redirect:true,
       }, function () {
         // this.props.history.push(response.data);
-        // console.log(this.state.path,this.state.redirect);
+        console.log(this.state.path,this.state.redirect);
       })
     })
     .catch(function (error) {
       //console.log(error.response);
     });
-    
+  }
+
+  TFOnChange(id,val){
+    let fields = this.state.fields.map((f)=>{
+      if (f.id != id) return f;
+      return {id,label:f.label,val};
+    })
+    console.log(fields);
+    this.setState({
+      fields
+    })
   }
 
   render() {
-    
+    //console.log(this.state.redirect)
     if (this.state.redirect) {
       return <Redirect push to={this.state.path}/>;
     }
     const { classes, theme } = this.props;
     const {template,page} = this.state;
-    console.log(template.data )
+    //console.log(template.data )
     const drawer = (
         
       <Fragment>
@@ -280,16 +290,21 @@ class Templates extends React.Component {
         </Link>
         <Divider />
         {template.data ? template.data.map((d)=>
-        
-          <TextField
-          id="textarea"
-          label={d.label}
-          placeholder="`Иванов Иван Иванович"
-          helperText="ФИО в именительном падеже"
-          multiline
-          className={classes.textField}
-          margin="normal"
+        <TFcomponent
+        onChange={this.TFOnChange}
+        id={d.id}
+        helper={d.label}
         />
+        // <TextField
+        //   id="textarea"
+        //   // label={d.label}
+        //   // placeholder="`Иванов Иван Иванович"
+        //   helperText={d.label}
+        //   multiline
+        //   className={classes.textField}
+        //   margin="normal"
+        //   onChange={this.TFOnChange}
+        // />
         ):<Fragment/>}
         
         </List>
@@ -361,11 +376,7 @@ class Templates extends React.Component {
         </Hidden>
         <main className={classes.content}>
           <div className={classes.toolbar} />
-          <Typography>
-            <div>
-              <Doc template={template} page={this.state.page}/>
-            </div>
-          </Typography>
+          <Doc template={template} page={this.state.page}/>
         </main>
       </div>
     );
@@ -377,4 +388,4 @@ Templates.propTypes = {
   theme: PropTypes.object.isRequired,
 };
 
-export default withRouter(withStyles(styles, { withTheme: true })(Templates));
+export default withStyles(styles, { withTheme: true })(Templates);
