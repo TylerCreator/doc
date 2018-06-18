@@ -10,7 +10,6 @@
 import mongoose from 'mongoose';
 import TemplateSchema from './TemplateSchema';
 import DocumentSchema from './DocumentSchema';
-
 /*
 initialize models
 */

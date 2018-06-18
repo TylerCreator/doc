@@ -5,21 +5,24 @@ import {
   GraphQLInt as Int,
   GraphQLID as ID,
   GraphQLList,
+  GraphQLInputObjectType
 } from 'graphql';
+import { templates } from '../queries/template';
 
 const TemplateType = new ObjectType({
   name: 'TemplateType',
-  fields: {
+  fields: () => ({
     id: { type: new NonNull(ID), resolve: t => t._id }, // eslint-disable-line no-underscore-dangle
     name: { type: new NonNull(StringType) },
     width: { type: new NonNull(StringType) },
     height: { type: new NonNull(StringType) },
     pages: {
-      type: new GraphQLList(new ObjectType({
+      type: new GraphQLList( new ObjectType({
         name: 'PageType',
-        fields: {
+        fields:()=> ({
           url: { type: StringType },
-        },
+        }),
+        
       })),
     },
     uri: { type: new NonNull(StringType) },
@@ -43,7 +46,7 @@ const TemplateType = new ObjectType({
         },
       })),
     },
-  },
+  }),
 });
 
 export default TemplateType;
